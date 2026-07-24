@@ -6,49 +6,49 @@ use App\Enums\Roles;
 use App\Http\Requests\Course\CreateRequest;
 use App\Http\Requests\Course\UpdateRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use LMS\Modules\Courses\Repositories\Contracts\CourseRepositoryInterface;
 use App\Traits\Authorizable;
 use Illuminate\Support\Facades\Auth;
-use LMS\Modules\Courses\Usecases\Contracts\{ListCourseUsecaseInterface,
+use LMS\Modules\Courses\Repositories\Contracts\CourseRepositoryInterface;
+use LMS\Modules\Courses\Usecases\Contracts\{
     CreateCourseUsescaseInterface,
-    ShowCourseUsecaseInterface,
-    UpdateCourseUsecaseInterface,
     DeleteCourseUsecaseInterface,
-    SubscribeCourseUsecaseInterface
+    ListCourseUsecaseInterface,
+    ShowCourseUsecaseInterface,
+    SubscribeCourseUsecaseInterface,
+    UpdateCourseUsecaseInterface
 };
-
-
-
 
 class CourseController extends Controller
 {
-
     use Authorizable;
 
     public function __construct()
     {
-        return $this->middleware('auth');
+        $this->middleware('auth');
     }
-
 
     public function index(ListCourseUsecaseInterface $listCourseUsecase)
     {
         $courses = $listCourseUsecase->handle();
+
         return view('courses.index', compact('courses'));
     }
 
     public function show($id, ShowCourseUsecaseInterface $showCourseUsecase)
     {
         $response = $showCourseUsecase->handle($id, Auth::user()->id);
+
         $course = $response['data']['course'];
         $lessons = $response['data']['lessons'];
         $subscribed = $response['data']['subscribed'];
+
         return view('courses.show', compact('lessons', 'course', 'subscribed'));
     }
 
     public function create(UserRepositoryInterface $userRepository)
     {
         $users = $userRepository->all(Roles::TEACHER)->pluck('name', 'id');
+
         return view('courses.create', compact('users'));
     }
 
@@ -56,7 +56,7 @@ class CourseController extends Controller
     {
         $result = $courseUsecase->handle($request->all());
 
-        if($result['data']){
+        if ($result['data']) {
             flash('Curso creado correctamente');
         } else {
             flash(implode('-', $result['errors']), 'error');
@@ -77,16 +77,19 @@ class CourseController extends Controller
     public function update($id, UpdateRequest $request, UpdateCourseUsecaseInterface $courseUsecase)
     {
         $courseUsecase->handle($id, $request->all());
+
         return redirect()->back();
     }
 
     public function destroy($id, DeleteCourseUsecaseInterface $courseUsecase)
     {
         $courseUsecase->handle($id);
+
         return redirect()->route('courses.index');
     }
 
-    public function subscribe($id, SubscribeCourseUsecaseInterface $subscribeCourseUsecase){
+    public function subscribe($id, SubscribeCourseUsecaseInterface $subscribeCourseUsecase)
+    {
         $response = $subscribeCourseUsecase->handle(Auth::user()->id, $id);
 
         return response()->json($response);
