@@ -1,56 +1,82 @@
-# LMS-Laravel
-[![Latest Stable Version](https://poser.pugx.org/lms-laravel/lms-laravel/v/stable)](https://packagist.org/packages/lms-laravel/lms-laravel)
-[![Total Downloads](https://poser.pugx.org/lms-laravel/lms-laravel/downloads)](https://packagist.org/packages/lms-laravel/lms-laravel)
-[![Latest Unstable Version](https://poser.pugx.org/lms-laravel/lms-laravel/v/unstable)](https://packagist.org/packages/lms-laravel/lms-laravel)
-[![License](https://poser.pugx.org/lms-laravel/lms-laravel/license)](https://packagist.org/packages/lms-laravel/lms-laravel)
+# LearnNest
 
-- [About](#about)
-- [License](#license)
+LearnNest is a Laravel-based learning management system for creating and managing online courses. It provides a simple workflow for administrators, teachers, and students to work with course content, users, and messaging features.
 
-### About
-LMS-Laravel is a Learning Management System (or LMS) that facilitates the creation of educational content by allowing you to manage courses and learning modules. The platform is simple and intuitive and provides features for:
-1. The Teacher (course creator)
-2. The Student (or user)
-3. The Admin
+## Project Overview
 
-As the name suggests, LMS-laravel is built on the latest Laravel framework, and uses various open source packages.
-This application is still in development, if you want to collaborate on the development, send us an email: 
-```
-Angel: angelkurten@hotmail.com
-```
+This project includes:
+- Course and lesson management
+- User accounts with role-based access
+- Messaging and chat functionality
+- Admin tools for managing platform content
+- A modern Laravel stack with Bootstrap-based admin UI
 
-### Installation
-* Run `git clone https://github.com/LMS-Laravel/LMS-Laravel.git LMS-Laravel`
-* `cd LMS-Laravel` 
-* Run `composer install` (install composer beforehand)
-* From the projects root run `cp .env.example .env`
-* Configure your `.env` file, with:
+## Requirements
 
-Database settings
-```
-DB_DATABASE=lms_laravel
-DB_USERNAME=root
-DB_PASSWORD=root
-```
-Google recaptcha settings (which you can configure from https://www.google.com/recaptcha/admin/site)
-```
-ENABLE_CAPTCHA=true
-NOCAPTCHA_SITEKEY=xxxxxxxxxx
-NOCAPTCHA_SECRET=xxxxxxxxxxx
-```
+Before installing the project, make sure the following are available:
+- PHP 7.4 or newer
+- Composer
+- Node.js and npm
+- MySQL or another supported database
+- Optional: Redis for caching and queue workflows
 
-Email settings (using a provider like Mailgun, Amazon SES, etc)
+## Installation
 
-* Run `php artisan key:generate`
-* Run `php artisan migrate`
-* For Auth API (to configure Laravel Passport), run: `php artisan passport:install`
-* Run `npm install && npm run dev`
-* Run `php artisan db:seed`
+1. Navigate to the project directory.
+2. Install PHP dependencies:
+   ```bash
+   composer install
+   ```
+3. Create your environment file:
+   ```bash
+   cp .env.example .env
+   ```
+4. Update the environment settings in `.env` for your local setup. A typical database configuration looks like this:
+   ```env
+   APP_URL=http://localhost
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=lms_laravel
+   DB_USERNAME=root
+   DB_PASSWORD=secret
+   ```
+5. Generate the application key:
+   ```bash
+   php artisan key:generate
+   ```
+6. Run the database migrations and seed the initial data:
+   ```bash
+   php artisan migrate
+   php artisan db:seed
+   ```
+7. Install frontend dependencies and build the assets:
+   ```bash
+   npm install
+   npm run dev
+   ```
+8. Start the application:
+   ```bash
+   php artisan serve
+   ```
+9. If you want to use the real-time chat features, start the WebSocket server as well:
+   ```bash
+   php artisan websockets:serve
+   ```
 
-* Start the Laravel server `php artisan serve --port=8000`
+## Optional Configuration
 
-* Start the Websocket server (for chat functionality) `php artisan websockets:serve`
+You may also want to configure the following for a complete local setup:
+- ReCAPTCHA values in `.env`
+- Mail settings for password resets and notifications
+- Pusher credentials for real-time features
+- Passport setup if you plan to use API authentication workflows
 
+## Notes
 
-### License
-LMS-Laravel is licensed under the MIT license. Enjoy!
+- This project is built with Laravel and uses Laravel Mix for frontend asset compilation.
+- The application is intended for local development and customization.
+
+## License
+
+This project is licensed under the MIT License.
