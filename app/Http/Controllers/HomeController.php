@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Entities\User;
-use App\Entities\Message;
 use LMS\Modules\Courses\Repositories\Contracts\CourseRepositoryInterface;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -21,9 +16,6 @@ class HomeController extends Controller
 
     /**
      * Show the application dashboard.
-     *
-     * @param CourseRepositoryInterface $courseRepository
-     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index(CourseRepositoryInterface $courseRepository)
     {
@@ -33,12 +25,10 @@ class HomeController extends Controller
     }
 
     /**
-     * Show stream and chat
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * Show the stream and chat page.
      */
     public function stream()
     {
         return view('stream');
     }
-
 }
